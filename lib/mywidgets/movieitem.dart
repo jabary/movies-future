@@ -1,7 +1,9 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:testfuture/models/movie.dart';
+import 'package:testfuture/providers/providers.dart';
 
 class MovieItem extends StatelessWidget{
 
@@ -13,7 +15,7 @@ class MovieItem extends StatelessWidget{
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(4),
-      height: 130,
+      height: 155,
       child: Card(
         child: Row(
           children: [
@@ -29,9 +31,20 @@ class MovieItem extends StatelessWidget{
                       Text(movie.genre.toString()),
                       Container(
                         alignment: Alignment.centerRight,
-                        child: Text(movie.ratings[0]['Value']!),
+                        child: Text("rating"),
                       ),
-                      Icon(Icons.add)
+                      IconButton(
+                          onPressed: (){
+                            context.read<WatchListModel>().itemExists(movie)?
+                            context.read<WatchListModel>().remove(movie):
+                            context.read<WatchListModel>().add(movie);
+                          },
+                          icon: Icon(
+                              context.watch<WatchListModel>().itemExists(movie)?
+                              Icons.delete:
+                              Icons.add
+                          )
+                      )
 
                     ],
                   ),
